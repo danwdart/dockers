@@ -4,9 +4,43 @@ FROM ubuntu:latest
 RUN apt update && \
     apt -y install curl ca-certificates
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
-RUN apt-get install -y nodejs git git-man gnu-efi less libcurl3-gnutls libedit2 liberror-perl libffi-dev libssl1.0.0 libxext6 libxmuu1 openssh-client xauth libgmp-dev libgd-dev libpq-dev default-libmysqlclient-dev libsqlite3-dev libmongo-client-dev libssl-dev libavahi-compat-libdnssd-dev build-essential autoconf libncurses-dev && \
+RUN apt-get install -y nodejs \
+    git \
+    git-man \
+    gnu-efi \
+    less \
+    libcurl3-gnutls \
+    libedit2 \
+    liberror-perl \
+    libffi-dev \
+    libssl1.0.0 \
+    libxext6 \
+    libxmuu1 \
+    openssh-client \
+    xauth \
+    libgmp-dev \
+    libgd-dev \
+    libpq-dev \
+    default-libmysqlclient-dev \
+    libsqlite3-dev \
+    libmongo-client-dev \
+    libssl-dev \
+    libavahi-compat-libdnssd-dev \
+    build-essential \
+    autoconf \
+    libncurses-dev \
+    locales \
+    mingw-w64 \
+    liblapack-dev && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Locale setup
+RUN sed -i 's/# en_GB.UTF-8/en_GB.UTF-8/' /etc/locale.gen
+RUN locale-gen
+ENV LANG=en_GB.UTF-8
+ENV LANGUAGE=en_GB.UTF-8
+ENV LC_ALL=en_GB.UTF-8
 
 # ghcup
 RUN mkdir -p ~/.ghcup/bin && \
@@ -27,17 +61,36 @@ RUN cabal new-install cabal-install
 # Stack
 RUN curl -sSL https://get.haskellstack.org/ | sh
 
-# More and prerequisites for GHCJS
-RUN stack install ghcid hlint alex happy hoogle
+# This is a separate step because it could fail
+RUN stack --system-ghc update
+
+# Prerequisites for GHCJS
+# Warning: this step takes frickin' ages!
+RUN stack --system-ghc install \
+    alex \
+    happy \
+    --no-run-tests --no-rerun-tests
 
 # GHCJS
 RUN git clone --branch ghc-8.6 https://github.com/ghcjs/ghcjs.git
 WORKDIR /ghcjs
 RUN git submodule update --init --recursive
 RUN ./utils/makePackages.sh
-RUN stack build
-RUN stack install
+RUN stack --system-ghc build
+RUN stack --system-ghc install
 RUN ghcjs-boot
 RUN cabal new-sdist
+
+
+# More
+# Separated for rebuild caching
+# Warning: this step takes frickin' ages!
+RUN stack --system-ghc install \
+    apply-refact \
+    ghcid \
+    hlint \
+    hoogle \
+    intero \
+    --no-run-tests --no-rerun-tests
 
 WORKDIR /
