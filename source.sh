@@ -1,11 +1,6 @@
 # Most of this stuff is rootless
-d() {
-    docker $@
-}
-
-sd() {
-    sudo docker $@
-}
+alias d='docker'
+alias sd='sudo docker'
 
 doco() {
     if [ -f docker-compose.yml ]
@@ -142,7 +137,9 @@ alias sds='sd search'
 alias sdsp='sd system prune -af'
 
 # Run in a home env (fake root)
-alias dhr='drr -v $PWD:$PWD -w $PWD --net host -it'
+alias dhr='drr --net host -v $PWD:$PWD -w $PWD -it'
+#alias dhr='drr -v $PWD:$PWD -w $PWD --net host -it'
+
 
 # Run in a home env (fake root, X)
 alias dhrx='dhr -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix'
@@ -158,6 +155,8 @@ alias sdhrrx='sdhr -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix'
 # Run in a home env (using root-owned daemon, run as user, X)
 alias sdhrx='sdhrrx -v /etc/passwd:/etc/passwd -v /etc/group:/etc/group -u $UID:$GROUPS'
 
+alias testnc='docker run --rm -it --entrypoint sh subfuzion/netcat'
+
 # Apps
 
 alias dhr-node='dhr -v $HOME:/root -v $PWD:$PWD node:alpine'
@@ -168,7 +167,10 @@ alias npx='dhr-node npx'
 alias yarn='dhr-node yarn'
 
 # Privileged for avahi to get around AppArmor
-alias dhr-hs='dhrx --privileged -v $HOME/.stack:/root/.stack -v $HOME/.cabal:/root/.cabal -v $HOME/.ghci:/root/.ghci -v $HOME/.hoogle:/root/.hoogle dandart/haskell'
+alias dhr-hs='dhrx -v $HOME/.stack:/root/.stack -v $HOME/.cabal:/root/.cabal -v $HOME/.ghci:/root/.ghci -v $HOME/.hoogle:/root/.hoogle dandart/haskell'
+alias dhr-hs-progs='dhrx -v $HOME/.ghci:/root/.ghci -v $HOME/.hoogle:/root/.hoogle dandart/haskell'
+alias sdhr-hs='sdhrx -v $HOME/.ghci:$HOME/.ghci -v $HOME/.stack:$HOME/.stack -v $HOME/.hoogle:$HOME/.hoogle -v $HOME/.cabal:$HOME/.cabal dandart/haskell'
+alias sdhr-hs-progs='sdhrx -v $HOME/.ghci:$HOME/.ghci -v $HOME/.hoogle:$HOME/.hoogle dandart/haskell'
 
 alias cabal='dhr-hs cabal'
 alias stack='dhr-hs stack'
@@ -180,10 +182,12 @@ alias hsc2hs='dhr-hs hsc2hs'
 alias ghcid='stack exec ghcid -- -l "stack exec hlint" -r -c stack ghci'
 alias ghcup='dhr-hs ghcup'
 alias ghcjs='dhr-hs ghcjs'
-alias hlint='dhr-hs hlint'
+alias hoogle='dhr-hs-progs hoogle'
+alias hlint='dhr-hs-progs hlint'
+alias intero='sdhr-hs-progs intero'
 
-alias dhr-nmap='sdhr jess/nmap'
-alias nmap='dhr-nmap'
+#alias dhr-nmap='sdhr jess/nmap'
+#alias nmap='dhr-nmap'
 
 alias dhr-masscan='sdhr jess/masscan'
 alias masscan='dhr-masscan'
@@ -207,14 +211,14 @@ alias qjackctl='dhr-qjackctl qjackctl'
 #alias dhr-audacity='dhrx jess/audacity'
 #alias audacity='dhr-audacity audacity'
 
-alias dhr-wine='dhrx -v $HOME/.wine:/root/.wine -v $HOME/.local/share:/root/.local/share jess/wine'
-alias wine='dhr-wine wine'
+#alias dhr-wine='dhrx -v $HOME/.wine:/root/.wine -v $HOME/.local/share:/root/.local/share jess/wine'
+#alias wine='dhr-wine wine'
 
-alias dhr-tor='drri -p9050:9050 jess/tor'
-alias tor='dhr-tor'
+#alias dhr-tor='drri -p9050:9050 jess/tor'
+#alias tor='dhr-tor'
 
-alias dhr-torbrowser='sdhrx jess/tor-browser'
-alias tor-browser='dhr-torbrowser'
+#alias dhr-torbrowser='sdhrx jess/tor-browser'
+#alias tor-browser='dhr-torbrowser'
 
 alias dhr-wireshark='sdhrx jess/wireshark'
 alias wireshark='dhr-wireshark'
@@ -225,8 +229,8 @@ alias wargames='dhr-wargames'
 #alias dhr-vscode='sdhrrx -v $HOME/.config/Code:/home/user/.config/Code -v $HOME/.vscode:/home/user/.vscode -v /var/run/screen/S-dwd/:/var/run/screen/S-user/ jess/vscode' # user "user" - can't override?
 #alias code='dhr-vscode'
 
-alias dhr-vlc='dhrx jess/vlc'
-alias vlc='dhr-vlc'
+#alias dhr-vlc='dhrx jess/vlc'
+#alias vlc='dhr-vlc'
 
 alias dhr-virtualbox='dhrx jess/virtualbox'
 alias virtualbox='dhr-virtualbox'
@@ -261,8 +265,8 @@ alias cathode='dhr-cathode'
 alias dhr-kali='sdhr jess/kalilinux'
 alias kali='dhr-kali bash'
 
-alias dhr-steam='sdhrx -v $HOME/.steam:$HOME/.steam -v $HOME/.local:$HOME/.local tianon/steam'
-alias steam='dhr-steam'
+#alias dhr-steam='sdhrx -v $HOME/.steam:$HOME/.steam -v $HOME/.local:$HOME/.local tianon/steam'
+#alias steam='dhr-steam'
 
 alias dhr-mongo='drri -p27017:27017 mongo'
 alias mongod='dhr-mongo'
