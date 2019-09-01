@@ -31,7 +31,8 @@ RUN apt-get install -y nodejs \
     libncurses-dev \
     locales \
     mingw-w64 \
-    liblapack-dev && \
+    liblapack-dev \
+    libbluetooth-dev && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -86,6 +87,7 @@ RUN cabal new-sdist
 # Separated for rebuild caching
 # Warning: this step takes frickin' ages!
 RUN stack --system-ghc install \
+    haskell-src-exts-1.21.0 \
     apply-refact \
     ghcid \
     hlint \
