@@ -137,14 +137,15 @@ alias sds='sd search'
 alias sdsp='sd system prune -af'
 
 # Run in a home env (fake root)
-alias dhr='drr --net host -v $PWD:$PWD -w $PWD -it'
+dhr() {
+    drr $OPTS -v $PWD:$PWD -w $PWD -it $@
+}
 #alias dhr='drr -v $PWD:$PWD -w $PWD --net host -it'
-
 
 # Run in a home env (fake root, X)
 alias dhrx='dhr -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix'
 
-
+#  --env-file <( env| cut -f1 -d= ) 
 # Run in a home env (real root)
 alias sdhr='sdrr -v $PWD:$PWD -w $PWD --net host -it'
 
@@ -155,9 +156,8 @@ alias sdhrrx='sdhr -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix'
 # Run in a home env (using root-owned daemon, run as user, X)
 alias sdhrx='sdhrrx -v /etc/passwd:/etc/passwd -v /etc/group:/etc/group -u $UID:$GROUPS'
 
-alias testnc='docker run --rm -it --entrypoint sh subfuzion/netcat'
-
 # Apps
+alias dhr-nc='dhr subfuzion/netcat'
 
 alias dhr-node='dhr -v $HOME:/root -v $PWD:$PWD node:alpine'
 
@@ -167,7 +167,7 @@ alias npx='dhr-node npx'
 alias yarn='dhr-node yarn'
 
 # Privileged for avahi to get around AppArmor
-alias dhr-hs='dhrx -v $HOME/.stack:/root/.stack -v $HOME/.cabal:/root/.cabal -v $HOME/.ghci:/root/.ghci -v $HOME/.hoogle:/root/.hoogle dandart/haskell'
+alias dhr-hs='dhrx -v $HOME/.stack:/root/.stack -v $HOME/.cabal:/root/.cabal -v $HOME/.ghci:/root/.ghci -v $HOME/.hoogle:/root/.hoogle -v $HOME/.serverlessrc:/root/.serverlessrc -v $HOME/.serverless:/root/.serverless dandart/haskell'
 alias dhr-hs-progs='dhrx -v $HOME/.ghci:/root/.ghci -v $HOME/.hoogle:/root/.hoogle dandart/haskell'
 alias sdhr-hs='sdhrx -v $HOME/.ghci:$HOME/.ghci -v $HOME/.stack:$HOME/.stack -v $HOME/.hoogle:$HOME/.hoogle -v $HOME/.cabal:$HOME/.cabal dandart/haskell'
 alias sdhr-hs-progs='sdhrx -v $HOME/.ghci:$HOME/.ghci -v $HOME/.hoogle:$HOME/.hoogle dandart/haskell'
