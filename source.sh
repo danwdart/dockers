@@ -167,7 +167,7 @@ alias npx='dhr-node npx'
 alias yarn='dhr-node yarn'
 
 # Privileged for avahi to get around AppArmor
-alias dhr-hs='dhrx -v $HOME/.stack:/root/.stack -v $HOME/.cabal:/root/.cabal -v $HOME/.ghci:/root/.ghci -v $HOME/.hoogle:/root/.hoogle -v $HOME/.serverlessrc:/root/.serverlessrc -v $HOME/.serverless:/root/.serverless dandart/haskell'
+alias dhr-hs='dhrx -v $HOME/.stack:/root/.stack -v $HOME/.cabal:/root/.cabal -v $HOME/.ghci:/root/.ghci -v $HOME/.hoogle:/root/.hoogle -v $HOME/.serverlessrc:/root/.serverlessrc -v $HOME/.serverless:/root/.serverless -v $HOME/.aws:/root/.aws -v /run/user/1000/docker.sock:/var/run/docker.sock -v $HOME/.config/docker/key.json:/etc/docker/key.json dandart/haskell'
 alias dhr-hs-progs='dhrx -v $HOME/.ghci:/root/.ghci -v $HOME/.hoogle:/root/.hoogle dandart/haskell'
 alias sdhr-hs='sdhrx -v $HOME/.ghci:$HOME/.ghci -v $HOME/.stack:$HOME/.stack -v $HOME/.hoogle:$HOME/.hoogle -v $HOME/.cabal:$HOME/.cabal dandart/haskell'
 alias sdhr-hs-progs='sdhrx -v $HOME/.ghci:$HOME/.ghci -v $HOME/.hoogle:$HOME/.hoogle dandart/haskell'
@@ -184,7 +184,8 @@ alias ghcup='dhr-hs ghcup'
 alias ghcjs='dhr-hs ghcjs'
 alias hoogle='dhr-hs-progs hoogle'
 alias hlint='dhr-hs-progs hlint'
-alias intero='sdhr-hs-progs intero'
+alias intero='dhr-hs stack ghci --with-ghc intero'
+alias sls='dhr-hs npx sls'
 
 #alias dhr-nmap='sdhr jess/nmap'
 #alias nmap='dhr-nmap'
@@ -247,7 +248,7 @@ alias skype='dhr-skype'
 alias dhr-rdesktop='dhrx jess/rdesktop'
 alias rdesktop='dhr-rdesktop'
 
-alias dhr-metasploit='dhrx jess/metasploit'
+alias dhr-metasploit='sdhrx strm/metasploit'
 alias metasploit='dhr-metasploit'
 
 alias dhr-keepassxc='dhrx jess/keepassxc'
