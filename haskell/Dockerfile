@@ -2,9 +2,11 @@ FROM ubuntu:latest
 
 # Prerequisites
 RUN apt update && \
+    apt -y full-upgrade && \
     apt -y install curl ca-certificates
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN apt install -y software-properties-common
 RUN add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
@@ -42,7 +44,6 @@ RUN apt-get install -y nodejs \
     ca-certificates \
     curl \
     gnupg-agent \
-    software-properties-common \
     docker-ce \
     docker-ce-cli \
     containerd.io && \
@@ -106,6 +107,7 @@ RUN stack --system-ghc install \
     hlint \
     hoogle \
     intero \
+    stylish-haskell \
     --no-run-tests --no-rerun-tests
 
 WORKDIR /
