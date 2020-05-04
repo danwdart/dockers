@@ -4,7 +4,7 @@ FROM ubuntu:latest
 RUN apt update && \
     apt -y full-upgrade && \
     apt -y install curl ca-certificates
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 RUN apt install -y software-properties-common
 RUN add-apt-repository \

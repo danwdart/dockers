@@ -62,7 +62,7 @@ dca() {
 sdca() {
     if [ -f docker-compose.admin.yml ]
     then
-        sdc -f docker-compose.admin.yml $@ 
+        sdc -f docker-compose.admin.yml $@
     else
         echo "No docker-compose.admin.yml present."
     fi
