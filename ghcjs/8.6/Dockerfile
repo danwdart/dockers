@@ -10,4 +10,6 @@ WORKDIR /src/ghcjs
 RUN ./utils/makePackages.sh
 RUN stack upgrade
 RUN stack install
+RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
+RUN apt-get install -y nodejs
 RUN ghcjs-boot
