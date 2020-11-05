@@ -9,8 +9,17 @@ RUN ./emsdk install latest
 RUN ./emsdk activate latest
 SHELL ["/bin/bash", "-c"]
 RUN source ./emsdk_env.sh
+WORKDIR /src
 RUN git clone https://github.com/ghcjs/ghcjs.git --branch=ghc-8.8 --depth=1
 WORKDIR /src/ghcjs
-RUN git submodule update --init --recursive
-RUN stack --system-ghc --skip-ghc-check install --local-bin-dir=inplace/bin
-RUN ./inplace/bin/ghcjs-boot -s ./lib/boot
+RUN git submodule update --init --recursive --depth=1 || echo "Never mind"
+WORKDIR /src/ghcjs/ghc
+RUN git submodule add -f -b ghc-8.10 https://gitlab.haskell.org/ghc/packages/array.git libraries/array
+RUN git submodule add -f -b master https://gitlab.haskell.org/ghc/packages/parallel.git libraries/parallel
+RUN git submodule add -f -b ghc-8.8 https://gitlab.haskell.org/ghc/haddock.git utils/haddock
+WORKDIR /src/ghcjs
+RUN git submodule update --init --recursive --depth=1
+RUN stack upgrade
+RUN stack setup
+RUN stack install
+RUN ghcjs-boot -s ./lib/boot
