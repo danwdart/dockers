@@ -1,6 +1,8 @@
 FROM haskell:8.8
-RUN apt update
-RUN apt -y install python
+# RUN apt update
+RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
+# RUN apt update
+RUN apt -y install nodejs python
 RUN apt clean
 WORKDIR /src
 RUN git clone https://github.com/emscripten-core/emsdk.git --depth=1
