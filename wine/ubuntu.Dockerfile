@@ -1,4 +1,4 @@
-FROM ubuntu:eoan
+FROM ubuntu:devel
 
 RUN dpkg --add-architecture i386 && \
     apt-get update && \

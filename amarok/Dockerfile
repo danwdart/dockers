@@ -1,4 +1,4 @@
-FROM ubuntu:cosmic
+FROM ubuntu:devel
 RUN apt update && \
     apt install -y amarok && \
     apt clean && \
