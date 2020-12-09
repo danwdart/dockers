@@ -1,4 +1,5 @@
-FROM haskell:8.6
+FROM fpco/stack-build:lts-14.27
+ENV STACK_ROOT=/home/stackage/.stack
 WORKDIR /src
 RUN git clone https://github.com/ghcjs/ghcjs.git --branch=ghc-8.6 --depth=1
 WORKDIR /src/ghcjs
