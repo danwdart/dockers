@@ -53,7 +53,7 @@ sdc() {
 dca() {
     if [ -f docker-compose.admin.yml ]
     then
-        dc -f docker-compose.admin.yml $@ 
+        dc -f docker-compose.admin.yml $@
     else
         echo "No docker-compose.admin.yml present."
     fi
@@ -151,7 +151,7 @@ dhr() {
 # Run in a home env (fake root, X)
 alias dhrx='dhr -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix'
 
-#  --env-file <( env| cut -f1 -d= ) 
+#  --env-file <( env| cut -f1 -d= )
 # Run in a home env (real root)
 alias sdhr='sdrri -v $PWD:$PWD -w $PWD --net host'
 
